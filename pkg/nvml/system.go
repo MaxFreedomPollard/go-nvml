@@ -68,7 +68,7 @@ func (l *library) SystemGetHicVersion() ([]HwbcEntry, Return) {
 // nvml.SystemGetTopologyGpuSet()
 func (l *library) SystemGetTopologyGpuSet(cpuNumber int) ([]Device, Return) {
 	var count uint32
-	ret := nvmlSystemGetTopologyGpuSetStub(uint32(cpuNumber), &count, nil)
+	ret := nvmlSystemGetTopologyGpuSet(uint32(cpuNumber), &count, nil)
 	if ret != SUCCESS {
 		return nil, ret
 	}
@@ -76,7 +76,7 @@ func (l *library) SystemGetTopologyGpuSet(cpuNumber int) ([]Device, Return) {
 		return []Device{}, ret
 	}
 	deviceArray := make([]nvmlDevice, count)
-	ret = nvmlSystemGetTopologyGpuSetStub(uint32(cpuNumber), &count, &deviceArray[0])
+	ret = nvmlSystemGetTopologyGpuSet(uint32(cpuNumber), &count, &deviceArray[0])
 	if ret == SUCCESS {
 		deviceArray = deviceArray[:count]
 	}
@@ -155,6 +155,3 @@ func (l *library) SystemGetCPER_v1(cper *GetCPER_v1) Return {
 	ret := nvmlSystemGetCPER_v1(cper)
 	return ret
 }
-
-// nvmlSystemGetTopologyGpuSetStub allows us to override this for testing.
-var nvmlSystemGetTopologyGpuSetStub = nvmlSystemGetTopologyGpuSet
